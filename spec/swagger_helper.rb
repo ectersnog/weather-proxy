@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+Dir[File.join(__dir__, 'schemas', '*.rb')].each { |f| require f }
 
 RSpec.configure do |config|
   # Specify a root folder where Swagger JSON files are generated
@@ -22,13 +23,18 @@ RSpec.configure do |config|
         title: 'API V1',
         version: 'v1'
       },
+      components: {
+        schemas: [
+          Schemas::Weather.schema
+        ].inject(:merge)
+      },
       paths: {},
       servers: [
         {
-          url: 'https://{defaultHost}',
+          url: 'http://{defaultHost}',
           variables: {
             defaultHost: {
-              default: 'www.example.com'
+              default: 'localhost:3000'
             }
           }
         }
