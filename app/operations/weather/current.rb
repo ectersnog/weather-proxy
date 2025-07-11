@@ -3,21 +3,40 @@
 module Weather
   class Current < ApplicationOperation
     def call(params:)
-      lat_lon = step find_lat_lon(params:)
+      search_type = step find_search_type(params:)
+      if search_type == :zip
+        lat_lon = step find_loc_by_zip(params:)
+      elsif search_type == :query
+        lat_lon = step find_loc_by_query(params:)
+      else
+        return :invalid_query
+      end
       station = step find_station(lat_lon:)
       step find_weather(station)
     end
 
     private
 
-    def find_lat_lon(params:)
-      if params[:zip].present?
-        geodata = Geodata.find_by_zip(params[:zip].strip)
-      elsif params[:city].present? && params[:state].present?
-        geodata = Geodata.find_by_city(params[:city].strip, params[:state].strip)
+    def find_search_type(params:)
+      return Failure(:invalid_query) unless params["q"].present?
+
+      params[:q] = params[:q].strip
+      if params[:q].match?(/^\d{5}$/) # ZIP code format
+        Success(:zip)
       else
-        return Failure(:no_params)
+        Success(:query)
       end
+    end
+
+    def find_loc_by_zip(params:)
+      geodata = Geodata.find_by_zip(params[:q])
+      return Failure(:no_loc) if geodata == :not_found
+
+      Success(geodata)
+    end
+
+    def find_loc_by_query(params:)
+      geodata = Geodata.find_by_city(params[:q])
       return Failure(:no_loc) if geodata == :not_found
 
       Success(geodata)
@@ -42,9 +61,20 @@ module Weather
       weather = HTTP.get("https://api.weather.gov/gridpoints/#{office}/#{grid_location_x},#{grid_location_y}/forecast")
 
       if weather.status.success?
-        current_temp = weather.parse(:json)["properties"]["periods"].first["temperature"]
-        Rails.cache.write("#{office}:#{grid_location_x},#{grid_location_y}", current_temp, expires_at: Time.now.end_of_day)
-        Success(current_temp)
+        forecast = weather.parse(:json)["properties"]["periods"]
+        weather_info = forecast.first
+        current_weather = {
+          temperature: weather_info["temperature"],
+          rain_chance: weather_info["probabilityOfPrecipitation"],
+          wind_speed: weather_info["windSpeed"],
+          wind_direction: weather_info["windDirection"],
+          short_forecast: weather_info["shortForecast"],
+          detailed_forecast: weather_info["detailedForecast"],
+          endtime: weather_info["endTime"]
+        }
+        expire_time = Time.parse(current_weather[:endtime])
+        Rails.cache.write(cache_name, current_weather, expires_at: expire_time)
+        Success(Rails.cache.fetch(cache_name))
       else
         Failure(weather.errors.full_messages)
       end
