@@ -1,24 +1,20 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Project of the week, Week 1
 
-Things you may want to cover:
+# Weather Proxy
 
-* Ruby version
+The intent behind this service is to practice working with third-party API’s and caching. This project is not to actually determine/forecast the weather.
 
-* System dependencies
+# How to install
+1. Clone the repository
+2. Install the dependencies with `bundle install`
 
-* Configuration
+# How to run
+1. Start the server with `rails s`
 
-* Database creation
+# Example usage
 
-* Database initialization
+curl "http://localhost:3000/weather?q=90210"
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+curl "http://localhost:3000/v1/weather?q=Hollywood%2CCA"
