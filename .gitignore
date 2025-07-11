@@ -33,3 +33,7 @@
 
 # Ignore .idea/
 /.idea/*
+
+# Ignore generated yardoc
+/.yardoc
+/doc

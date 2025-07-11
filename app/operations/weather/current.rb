@@ -12,9 +12,9 @@ module Weather
 
     def find_lat_lon(params:)
       if params[:zip].present?
-        geodata = Geodata.find_by_zip(params[:zip])
+        geodata = Geodata.find_by_zip(params[:zip].strip)
       elsif params[:city].present? && params[:state].present?
-        geodata = Geodata.find_by_city(params[:city], params[:state])
+        geodata = Geodata.find_by_city(params[:city].strip, params[:state].strip)
       else
         return Failure(:no_params)
       end
@@ -35,7 +35,8 @@ module Weather
       office = station_properties["cwa"]
       grid_location_x = station_properties["gridX"]
       grid_location_y = station_properties["gridY"]
-      return Success(Rails.cache.fetch("#{office}:#{grid_location_x},#{grid_location_y}")) if Rails.cache.exist?("#{office}:#{grid_location_x},#{grid_location_y}")
+      cache_name = "#{office}:#{grid_location_x},#{grid_location_y}"
+      return Success(Rails.cache.fetch(cache_name)) if Rails.cache.exist?(cache_name)
 
       puts "Fetching weather data for office: #{office}, gridX: #{grid_location_x}, gridY: #{grid_location_y}"
       weather = HTTP.get("https://api.weather.gov/gridpoints/#{office}/#{grid_location_x},#{grid_location_y}/forecast")
