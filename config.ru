@@ -1,4 +1,6 @@
-# This file is used by Rack-based servers to start the application.
+# frozen_string_literal: true
+
+# This file is used by Rack-based servers to start the application.config.ru
 
 require_relative "config/environment"
 

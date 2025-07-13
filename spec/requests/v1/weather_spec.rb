@@ -2,11 +2,11 @@
 
 require 'swagger_helper'
 
-RSpec.describe "v1/weather", type: :request do
+RSpec.describe "v1/weather" do
   context "when weather service is available" do
     before do
       allow(Weather::Current).to receive(:call).and_return(
-        OpenStruct.new(
+        WeatherResult.new(
           success?: true,
           success: {
             temperature: 78,
@@ -22,6 +22,7 @@ RSpec.describe "v1/weather", type: :request do
         )
       )
     end
+
     path '/v1/weather' do
       get('current weather') do
         parameter name: :q, in: :query, type: :string
@@ -35,15 +36,17 @@ RSpec.describe "v1/weather", type: :request do
       end
     end
   end
+
   context "when weather service is unavailable" do
     before do
       allow(Weather::Current).to receive(:call).and_return(
-        OpenStruct.new(
+        WeatherResult.new(
           success?: false,
           failure: 'Location not found'
         )
       )
     end
+
     path '/v1/weather' do
       get('current weather') do
         parameter name: :q, in: :query, type: :string

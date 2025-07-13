@@ -319,6 +319,9 @@ GEM
     rubocop-ast (1.45.1)
       parser (>= 3.3.7.2)
       prism (~> 1.4)
+    rubocop-factory_bot (2.27.1)
+      lint_roller (~> 1.1)
+      rubocop (~> 1.72, >= 1.72.1)
     rubocop-performance (1.25.0)
       lint_roller (~> 1.1)
       rubocop (>= 1.75.0, < 2.0)
@@ -333,6 +336,13 @@ GEM
       rubocop (>= 1.72)
       rubocop-performance (>= 1.24)
       rubocop-rails (>= 2.30)
+    rubocop-rspec (3.6.0)
+      lint_roller (~> 1.1)
+      rubocop (~> 1.72, >= 1.72.1)
+    rubocop-rspec_rails (2.31.0)
+      lint_roller (~> 1.1)
+      rubocop (~> 1.72, >= 1.72.1)
+      rubocop-rspec (~> 3.5)
     ruby-progressbar (1.13.0)
     securerandom (0.4.1)
     shoulda-matchers (6.5.0)
@@ -415,7 +425,11 @@ DEPENDENCIES
   rswag-api
   rswag-specs
   rswag-ui
+  rubocop-factory_bot
+  rubocop-rails
   rubocop-rails-omakase
+  rubocop-rspec
+  rubocop-rspec_rails
   shoulda-matchers (~> 6.0)
   solid_cable
   solid_cache
