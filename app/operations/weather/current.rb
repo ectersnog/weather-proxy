@@ -18,7 +18,7 @@ module Weather
     private
 
     def find_search_type(params:)
-      return Failure(:invalid_query) unless params["q"].present?
+      return Failure(:invalid_query) if params[:q].blank?
 
       params[:q] = params[:q].strip
       if params[:q].match?(/^\d{5}$/) # ZIP code format
@@ -29,14 +29,14 @@ module Weather
     end
 
     def find_loc_by_zip(params:)
-      geodata = Geodata.find_by_zip(params[:q])
+      geodata = Geodata.find_by(params[:q])
       return Failure(:no_loc) if geodata == :not_found
 
       Success(geodata)
     end
 
     def find_loc_by_query(params:)
-      geodata = Geodata.find_by_city(params[:q])
+      geodata = Geodata.find_by(params[:q])
       return Failure(:no_loc) if geodata == :not_found
 
       Success(geodata)
@@ -57,7 +57,7 @@ module Weather
       cache_name = "#{office}:#{grid_location_x},#{grid_location_y}"
       return Success(Rails.cache.fetch(cache_name)) if Rails.cache.exist?(cache_name)
 
-      puts "Fetching weather data for office: #{office}, gridX: #{grid_location_x}, gridY: #{grid_location_y}"
+      Rails.logger.info "Fetching weather data for office: #{office}, gridX: #{grid_location_x}, gridY: #{grid_location_y}"
       weather = HTTP.get("https://api.weather.gov/gridpoints/#{office}/#{grid_location_x},#{grid_location_y}/forecast")
 
       if weather.status.success?
@@ -72,7 +72,7 @@ module Weather
           detailed_forecast: weather_info["detailedForecast"],
           endtime: weather_info["endTime"]
         }
-        expire_time = Time.parse(current_weather[:endtime])
+        expire_time = Time.zone.parse(current_weather[:endtime])
         Rails.cache.write(cache_name, current_weather, expires_at: expire_time)
         Success(Rails.cache.fetch(cache_name))
       else
