@@ -15,6 +15,6 @@ The intent behind this service is to practice working with third-party API’s a
 
 # Example usage
 
-curl "http://localhost:3000/weather?q=90210"
+`curl "http://localhost:3000/weather?q=90210"`
 
-curl "http://localhost:3000/v1/weather?q=Hollywood%2CCA"
+`curl "http://localhost:3000/v1/weather?q=Hollywood%2CCA"`

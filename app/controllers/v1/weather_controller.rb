@@ -3,7 +3,7 @@
 module V1
   class WeatherController < ApplicationController
     def current
-      result = Weather::Current.call(params:)
+      result = Weather::Current.call(params.expect(:q))
       if result.success?
         render locals: { current: result.success }
       else
