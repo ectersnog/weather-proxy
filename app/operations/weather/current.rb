@@ -29,14 +29,14 @@ module Weather
     end
 
     def find_loc_by_zip(params:)
-      geodata = Geodata.find_by_zip(params[:q])
+      geodata = Geodata.find_by(params[:q])
       return Failure(:no_loc) if geodata == :not_found
 
       Success(geodata)
     end
 
     def find_loc_by_query(params:)
-      geodata = Geodata.find_by_city(params[:q])
+      geodata = Geodata.find_by(params[:q])
       return Failure(:no_loc) if geodata == :not_found
 
       Success(geodata)
