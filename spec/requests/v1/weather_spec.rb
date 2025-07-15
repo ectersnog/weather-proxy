@@ -8,7 +8,7 @@ RSpec.describe "v1/weather" do
       allow(Weather::Current).to receive(:call).and_return(
         WeatherResult.new(
           success?: true,
-          success: {
+          success: CurrentWeatherResult.new(
             temperature: 78,
             rain_chance: {
               unitCode: 'wmoUnit:percent',
@@ -17,8 +17,9 @@ RSpec.describe "v1/weather" do
             wind_speed: '10 mph',
             wind_direction: 'SW',
             short_forecast: 'Sunny',
-            detailed_forecast: 'A sunny day with a high of 78 degrees and small chance of rain.'
-          }
+            detailed_forecast: 'A sunny day with a high of 78 degrees and small chance of rain.',
+            endtime: 1.day.from_now
+          )
         )
       )
     end

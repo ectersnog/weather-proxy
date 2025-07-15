@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
 class Geodata
+  # Class to return the location information based on query string.
+  # @param query [String]
+  #   - 'Los Angeles, CA' - City and state
+  #   - 'Los Angeles' - City only
+  #   - '90210' - Zip code
+  # @return [WeatherData::Location] The location information from the WeatherData service.
   def self.find(query)
     query_string = if query.match?(/\d{5}/)
       "#{query} + &include=postal"
@@ -11,6 +17,6 @@ class Geodata
       query
     end
 
-    ExternalData.location(query_string)
+    WeatherData.location(query_string)
   end
 end
