@@ -3,6 +3,7 @@
 class Geodata
   # Class to return the location information based on query string.
   # @param query [String]
+  # @example
   #   - 'Los Angeles, CA' - City and state
   #   - 'Los Angeles' - City only
   #   - '90210' - Zip code

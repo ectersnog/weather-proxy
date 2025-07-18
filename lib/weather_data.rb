@@ -21,7 +21,6 @@ class WeatherData
   #
   # @example City and state query
   #   WeatherData.location("Los Angeles, CA")
-
   def self.location(query)
     Rails.cache.fetch(cache_key("l", query)) do
       Rails.logger.info "Fetching location data for query: #{query}"
@@ -81,9 +80,10 @@ class WeatherData
 
     Rails.logger.info "Fetching forecast data for query: #{location}"
 
-    query_url = "#{FORECAST}/#{location.office}/#{location.grid_location_x},#{location.grid_location_y}/forecast"
+    response = HTTP.get(
+      "#{FORECAST}/#{location.office}/#{location.grid_location_x},#{location.grid_location_y}/forecast"
+    )
 
-    response = HTTP.get(query_url)
     return unless response.status.success?
 
     forecast = response.parse(:json)["properties"]["periods"][0]

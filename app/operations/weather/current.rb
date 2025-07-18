@@ -8,7 +8,6 @@ module Weather
     # @param query [String] The location query, which can be
     # @example
     #   Weather::Current.call('Tulsa, OK')
-    #
 
     def call(query:)
       station = step find_location(query)
