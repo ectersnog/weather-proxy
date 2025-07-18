@@ -81,7 +81,7 @@ GEM
     bigdecimal (3.2.2)
     bootsnap (1.18.6)
       msgpack (~> 1.2)
-    brakeman (7.0.2)
+    brakeman (7.1.0)
       racc
     builder (3.3.0)
     coderay (1.1.3)
@@ -104,7 +104,7 @@ GEM
     dry-initializer-rails (3.1.1)
       dry-initializer (>= 2.4, < 4)
       rails (> 3.0)
-    dry-monads (1.8.3)
+    dry-monads (1.9.0)
       concurrent-ruby (~> 1.0)
       dry-core (~> 1.1)
       zeitwerk (~> 2.6)
@@ -112,7 +112,7 @@ GEM
       dry-monads (~> 1.6)
       zeitwerk (~> 2.6)
     ed25519 (1.4.0)
-    erb (5.0.1)
+    erb (5.0.2)
     erubi (1.13.1)
     et-orbi (1.2.11)
       tzinfo
@@ -141,7 +141,7 @@ GEM
     http-form_data (2.3.0)
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
-    io-console (0.8.0)
+    io-console (0.8.1)
     irb (1.15.2)
       pp (>= 0.6.0)
       rdoc (>= 4.0.0)
@@ -149,7 +149,7 @@ GEM
     jbuilder (2.13.0)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
-    json (2.12.2)
+    json (2.13.0)
     json-schema (5.2.1)
       addressable (~> 2.8)
       bigdecimal (~> 3.1)
@@ -212,7 +212,7 @@ GEM
       racc (~> 1.4)
     nokogiri (1.18.8-x86_64-linux-musl)
       racc (~> 1.4)
-    ostruct (0.6.2)
+    ostruct (0.6.3)
     parallel (1.27.0)
     parser (3.3.8.0)
       ast (~> 2.4.1)
@@ -305,7 +305,7 @@ GEM
     rswag-ui (2.16.0)
       actionpack (>= 5.2, < 8.1)
       railties (>= 5.2, < 8.1)
-    rubocop (1.77.0)
+    rubocop (1.78.0)
       json (~> 2.3)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.1.0)
@@ -316,7 +316,7 @@ GEM
       rubocop-ast (>= 1.45.1, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 2.4.0, < 4.0)
-    rubocop-ast (1.45.1)
+    rubocop-ast (1.46.0)
       parser (>= 3.3.7.2)
       prism (~> 1.4)
     rubocop-factory_bot (2.27.1)
@@ -356,20 +356,20 @@ GEM
       activejob (>= 7.2)
       activerecord (>= 7.2)
       railties (>= 7.2)
-    solid_queue (1.1.5)
+    solid_queue (1.2.0)
       activejob (>= 7.1)
       activerecord (>= 7.1)
       concurrent-ruby (>= 1.3.1)
       fugit (~> 1.11.0)
       railties (>= 7.1)
       thor (~> 1.3.1)
-    sqlite3 (2.7.1-aarch64-linux-gnu)
-    sqlite3 (2.7.1-aarch64-linux-musl)
-    sqlite3 (2.7.1-arm-linux-gnu)
-    sqlite3 (2.7.1-arm-linux-musl)
-    sqlite3 (2.7.1-arm64-darwin)
-    sqlite3 (2.7.1-x86_64-linux-gnu)
-    sqlite3 (2.7.1-x86_64-linux-musl)
+    sqlite3 (2.7.3-aarch64-linux-gnu)
+    sqlite3 (2.7.3-aarch64-linux-musl)
+    sqlite3 (2.7.3-arm-linux-gnu)
+    sqlite3 (2.7.3-arm-linux-musl)
+    sqlite3 (2.7.3-arm64-darwin)
+    sqlite3 (2.7.3-x86_64-linux-gnu)
+    sqlite3 (2.7.3-x86_64-linux-musl)
     sshkit (1.24.0)
       base64
       logger
@@ -399,13 +399,21 @@ GEM
 
 PLATFORMS
   aarch64-linux
+  aarch64-linux
+  aarch64-linux-gnu
   aarch64-linux-gnu
   aarch64-linux-musl
+  aarch64-linux-musl
   arm-linux-gnu
+  arm-linux-gnu
+  arm-linux-musl
   arm-linux-musl
   arm64-darwin-24
   x86_64-linux
+  x86_64-linux
   x86_64-linux-gnu
+  x86_64-linux-gnu
+  x86_64-linux-musl
   x86_64-linux-musl
 
 DEPENDENCIES
