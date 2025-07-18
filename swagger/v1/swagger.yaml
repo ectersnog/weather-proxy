@@ -1,0 +1,61 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+components:
+  schemas:
+    weather_current_response:
+      type: object
+      properties:
+        current:
+          type: object
+          properties:
+            temperature:
+              type: integer
+            rain_chance:
+              type: object
+              properties:
+                unitCode:
+                  type: string
+                value:
+                  type: integer
+            wind_speed:
+              type: string
+            wind_direction:
+              type: string
+            short_forecast:
+              type: string
+            detailed_forecast:
+              type: string
+    weather_error_response:
+      oneOf:
+      - type: object
+        properties:
+          errors:
+            type: string
+      - type: object
+        properties:
+          errors:
+            type: array
+            items:
+              type: string
+paths:
+  "/v1/weather":
+    get:
+      summary: current weather
+      parameters:
+      - name: q
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: current weather by city
+        '404':
+          description: service unavailable
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000

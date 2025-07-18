@@ -1,44 +1,23 @@
 # frozen_string_literal: true
 
 class Geodata
-  USGS_URL = "https://dashboard.waterdata.usgs.gov/service/geocoder/get/location/1.0?term="
-
-  def self.find_by_zip(zip)
-    return Rails.cache.fetch("geodata:#{zip}") if Rails.cache.exist?("geodata:#{zip}")
-
-    Rails.logger.info "Fetching geodata for zip: #{zip}"
-    response = HTTP.get(USGS_URL + "#{zip}&include=postal")
-    return unless response.status.success?
-
-    return :not_found unless response.parse(:json).length.positive?
-
-    lat = response.parse(:json)[0]["Latitude"].truncate(2)
-    lon = response.parse(:json)[0]["Longitude"].truncate(2)
-    Rails.cache.write("geodata:#{zip}", { lat:, lon: })
-    { lat:, lon: }
-  end
-
-  def self.find_by_city(query)
-    query = query.split.join.downcase
-    return Rails.cache.fetch("geodata:#{query}") if Rails.cache.exist?("geodata:#{query}")
-
-    Rails.logger.info "Fetching geodata for city: #{query}"
-
-    response = if query.include?(",")
+  # Class to return the location information based on query string.
+  # @param query [String]
+  # @example
+  #   - 'Los Angeles, CA' - City and state
+  #   - 'Los Angeles' - City only
+  #   - '90210' - Zip code
+  # @return [WeatherData::Location] The location information from the WeatherData service.
+  def self.find(query)
+    query_string = if query.match?(/\d{5}/)
+      "#{query} + &include=postal"
+    elsif query.include?(",")
       city, state = query.split(",")
-      city.strip!
-      state.strip!
-      HTTP.get(USGS_URL + "#{city}&states=#{state}")
+      "#{city.strip}&states=#{state.strip}"
     else
-      HTTP.get(USGS_URL + query)
+      query
     end
-    return unless response.status.success?
 
-    return :not_found unless response.parse(:json).length.positive?
-
-    lat = response.parse(:json)[0]["Latitude"].truncate(2)
-    lon = response.parse(:json)[0]["Longitude"].truncate(2)
-    Rails.cache.write("geodata:#{query}", { lat:, lon: })
-    { lat:, lon: }
+    WeatherData.location(query_string)
   end
 end
