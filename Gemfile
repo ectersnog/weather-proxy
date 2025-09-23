@@ -10,7 +10,7 @@ gem "http", "~> 5.3"
 gem "jbuilder", "~> 2.13"
 gem "kamal", require: false
 gem "puma", ">= 5.0"
-gem "rails", "~> 8.0.2"
+gem "rails", "~> 8.0.3"
 gem "rswag-api"
 gem "rswag-ui"
 gem "solid_cable"
